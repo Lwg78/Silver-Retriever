@@ -5,9 +5,13 @@
 ![Python](https://img.shields.io/badge/Python-3.9%2B-blue) ![Streamlit](https://img.shields.io/badge/UI-Streamlit-red) ![Scikit-Learn](https://img.shields.io/badge/Engine-Scikit_Learn-orange) ![Status](https://img.shields.io/badge/Status-Operational-success)
 
 ## 📖 Introduction
-Silver Retriever is a "Study Buddy" search engine designed to run entirely offline on legacy hardware (e.g., MacBook Air 2017). Unlike modern RAG systems that require heavy GPUs for Neural Embeddings (BERT/LLMs), Silver Retriever uses a hybrid approach:
-1.  **Statistical Search (TF-IDF)** for speed and efficiency.
-2.  **Rule-Based Plugins (The Brain)** for domain-specific intelligence (finding deadlines, definitions, etc.).
+
+Silver Retriever is a specialized, offline-first RAG system. **Inspired by AI Singapore's (AISG) robust "Golden Retriever,"** this project represents my initiative to "walk the walk" in AI Engineering.
+
+My goal was to reverse-engineer the core concepts of retrieval systems (like the Golden Retriever) but adapt them for **extreme resource constraints**. While modern systems rely on heavy GPUs for Neural Embeddings (BERT/LLMs), Silver Retriever proves that effective search pipelines can be built on legacy hardware (e.g., a old MacBook) by using a smart hybrid approach:
+
+1.  **Statistical Search (TF-IDF):** Delivers instant, CPU-friendly retrieval speed.
+2.  **Rule-Based Plugins (The Brain):** Simulates "reasoning" by using domain-specific logic to extract deadlines, definitions, and tasks.
 
 ## 🚀 Key Features
 * **100% Offline:** No API keys, no internet required. Privacy-first.
@@ -20,25 +24,17 @@ Silver Retriever is a "Study Buddy" search engine designed to run entirely offli
 
 The system follows a 3-Layer Modular Architecture:
 
-```mermaid
-graph TD
-    User[User Query] --> UI[app.py (Streamlit)]
-    UI --> Brain[src/brain.py]
-    
-    subgraph "The Brain (Logic)"
-    Brain --> CheckPlugins{Check Triggers}
-    CheckPlugins -->|Match| Plugin[src/plugins/*.py]
-    CheckPlugins -->|No Match| Fallback[General Search]
-    end
-    
-    subgraph "The Engine (Muscle)"
-    Brain --> Engine[src/engine.py]
-    Engine -->|TF-IDF| Storage[(data/storage.pkl)]
-    end
-    
-    Plugin -->|Boost Score| UI
-    Engine -->|Raw Results| UI
-```
+[ User Query ]
+      ⬇
+[ Interface (app.py) ] 
+      ⬇
+[ The Brain (src/brain.py) ] ────➡ [ Check Plugins ]
+      ⬇                                   ⬇
+      ⬇                           (Admin, Feng Shui, AI...)
+      ⬇                                   ⬇
+[ The Engine (src/engine.py) ] ⬅── [ Boost Scores ]
+      ⬇
+[ TF-IDF Index (data/storage.pkl) ]
 
 ## 📂 Project Structure
 
@@ -62,7 +58,7 @@ Silver_Retriever/
 
 1. Clone the repo
 ```bash
-git clone [https://github.com/YOUR_USERNAME/Silver-Retriever.git](https://github.com/YOUR_USERNAME/Silver-Retriever.git)
+git clone https://github.com/Lwg78/Silver-Retriever.git
 cd Silver-Retriever
 ```
 
