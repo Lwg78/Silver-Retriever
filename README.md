@@ -6,9 +6,9 @@
 
 ## 📖 Introduction
 
-Silver Retriever is a specialized, offline-first RAG system. **Inspired by AI Singapore's (AISG) robust "Golden Retriever,"** this project represents my initiative to "walk the walk" in AI Engineering.
+Silver Retriever is a specialized, offline-first RAG system. **Inspired by AI Singapore's (AISG) robust [Golden Retriever](https://github.com/aisingapore/goldenretriever),** this project represents my initiative to "walk the walk" in AI Engineering.
 
-My goal was to reverse-engineer the core concepts of retrieval systems (like the Golden Retriever) but adapt them for **extreme resource constraints**. While modern systems rely on heavy GPUs for Neural Embeddings (BERT/LLMs), Silver Retriever proves that effective search pipelines can be built on legacy hardware (e.g., a old MacBook) by using a smart hybrid approach:
+My goal was to reverse-engineer the core concepts of retrieval systems (like the Golden Retriever) but adapt them for **extreme resource constraints**. While modern systems rely on heavy GPUs for Neural Embeddings (BERT/LLMs), Silver Retriever proves that effective search pipelines can be built on legacy hardware (e.g., a 2017 MacBook Air) by using a smart hybrid approach:
 
 1.  **Statistical Search (TF-IDF):** Delivers instant, CPU-friendly retrieval speed.
 2.  **Rule-Based Plugins (The Brain):** Simulates "reasoning" by using domain-specific logic to extract deadlines, definitions, and tasks.
@@ -24,17 +24,24 @@ My goal was to reverse-engineer the core concepts of retrieval systems (like the
 
 The system follows a 3-Layer Modular Architecture:
 
-[ User Query ]
-      ⬇
-[ Interface (app.py) ] 
-      ⬇
-[ The Brain (src/brain.py) ] ────➡ [ Check Plugins ]
-      ⬇                                   ⬇
-      ⬇                           (Admin, Feng Shui, AI...)
-      ⬇                                   ⬇
-[ The Engine (src/engine.py) ] ⬅── [ Boost Scores ]
-      ⬇
-[ TF-IDF Index (data/storage.pkl) ]
+```mermaid
+graph TD
+    User([User Query]) --> UI[app.py - Interface]
+    UI --> Brain[src/brain.py - The Manager]
+    
+    subgraph Logic["The Brain Layer"]
+    Brain --> Check{Check Triggers}
+    Check -->|Match| Plugin[src/plugins/*.py]
+    Check -->|No Match| Engine
+    end
+    
+    subgraph Muscle["The Engine Layer"]
+    Engine[src/engine.py] -->|TF-IDF Search| Storage[(data/storage.pkl)]
+    end
+    
+    Plugin -->|Boost Score| UI
+    Engine -->|Raw Results| UI
+```
 
 ## 📂 Project Structure
 
